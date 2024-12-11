@@ -14,6 +14,7 @@ import tempfile
 import subprocess
 import zipfile
 import waitress
+from werkzeug import Request
 from werkzeug.utils import secure_filename
 from flask import (
     Flask, jsonify, render_template, redirect,
@@ -71,7 +72,9 @@ app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = False
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 * 1024
 
+Request.max_form_parts = 5000000
 DEV_MODE = 0
 HOST = '0.0.0.0'
 PORT = os.environ['PORT']
